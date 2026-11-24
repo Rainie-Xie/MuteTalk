@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Talk Shop</title>
+<meta name="description" content="商务英语口语练习：情景对话、60 秒挑战、救场短语库">
+<meta name="theme-color" content="#2343D4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Talk Shop">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>
+/* Layout: one phone-width column; a chat-style practice room, bottom tab bar, highlighter marks on phrases worth keeping.
+   System fonts only, so it loads fast everywhere (no external requests). */
+:root{
+  --bg:#F2F4F9; --surface:#FFFFFF; --sunk:#E8ECF4; --ink:#14213D; --muted:#5A6580; --line:#D9DFEA;
+  --accent:#2343D4; --accent-ink:#FFFFFF; --accent-soft:#E3E8FC;
+  --mark:#FFE45C; --mark-ink:#1B1B12;
+  --good:#1D7F54; --warn:#A86A12; --bad:#BC3B34;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue","Microsoft YaHei",system-ui,sans-serif;
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Helvetica Neue","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r:14px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0D1322; --surface:#161F35; --sunk:#1D2842; --ink:#E7EBF5; --muted:#98A3BE; --line:#28344F;
+  --accent:#8195FF; --accent-ink:#0D1322; --accent-soft:#232F55;
+  --mark:#E9CB3B; --mark-ink:#17150A;
+  --good:#4CC28C; --warn:#E0A645; --bad:#F07A72; color-scheme:dark }}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-tap-highlight-color:transparent}
+.app{max-width:560px;margin:0 auto;padding-block:14px calc(96px + env(safe-area-inset-bottom,0px))}
+body.in-chat .app{padding-bottom:12px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+.muted{color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.brand h1{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.brand h1 span{background:linear-gradient(transparent 58%,var(--mark) 58%);padding:0 2px}
+.topr{display:flex;align-items:center;gap:10px}
+.streak{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.streak b{font-family:var(--f-mono);color:var(--ink);font-weight:500}
+.dots{display:flex;gap:3px}
+.dots i{width:7px;height:7px;border-radius:2px;background:var(--line)}
+.dots i.on{background:var(--accent)}
+
+.notice{background:var(--sunk);border-radius:var(--r);padding:10px 12px;font-size:13px;color:var(--muted);margin-bottom:14px}
+.notice b{color:var(--ink)}
+.eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:22px 0 10px}
+
+.today{background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:16px;display:grid;gap:10px}
+.today small{font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.8;font-weight:600}
+.today h2{font-size:20px}
+.today p{margin:0;opacity:.88;font-size:14px}
+.today button{justify-self:start;background:var(--accent-ink);color:var(--accent);font-weight:600;padding:9px 16px;border-radius:999px}
+.scen{display:grid;gap:8px}
+.scen button{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.scen .num{font-family:var(--f-mono);font-size:12px;color:var(--muted);width:34px;height:34px;border-radius:10px;background:var(--sunk);display:grid;place-items:center}
+.scen .t{font-weight:600;font-size:15px}
+.scen .s{font-size:13px;color:var(--muted)}
+.scen .who{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.scen .done{color:var(--good);border-color:var(--good)}
+
+.chathead{display:flex;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-top:-8px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.iconbtn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);flex:none}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chathead .ttl{flex:1;min-width:0}
+.chathead .ttl h2{font-size:17px}
+.chathead .ttl div{font-size:12px;color:var(--muted)}
+.brief{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:8px 0 14px;font-size:13.5px}
+.brief summary{cursor:pointer;font-weight:600;font-size:13px}
+.brief ul{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+.phr{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center}
+.phr .en{font-weight:500}
+.phr .zh{font-size:12.5px;color:var(--muted);grid-column:1}
+.phr .acts{grid-row:1/span 2;grid-column:2;display:flex;gap:4px}
+.mini{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.mini:active{background:var(--sunk);color:var(--ink)}
+.mini svg{width:17px;height:17px}
+.mini.starred{color:var(--warn)}
+
+.thread{display:grid;gap:12px}
+.msg{max-width:88%;padding:10px 13px;border-radius:16px;font-size:15px}
+.msg .who{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:2px}
+.them{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:5px;justify-self:start}
+.me{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:5px;justify-self:end;white-space:pre-wrap}
+.me .who{color:inherit;opacity:.75;text-align:right}
+.them .say{display:flex;gap:6px;align-items:flex-start}
+.them .say p{margin:0;flex:1}
+.typing{display:inline-flex;gap:4px;padding:4px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:b 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{opacity:.25}40%{opacity:1}}
+
+.fb{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:grid;gap:10px;font-size:14px}
+.row{display:flex;gap:10px;align-items:center}
+.score{font-family:var(--f-mono);font-size:13px;padding:3px 9px;border-radius:999px;color:var(--surface);flex:none}
+.score.hi{background:var(--good)}.score.mid{background:var(--warn)}.score.lo{background:var(--bad)}
+.better{background:var(--sunk);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.better p{margin:0;font-weight:500}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.chip svg{width:14px;height:14px}
+.chip.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.rec{background:var(--bad);border-color:var(--bad);color:#fff}
+.fixes{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.fixes s{color:var(--bad);text-decoration-thickness:1.5px}
+.fixes b{color:var(--good);font-weight:600}
+.fixes span{display:block;font-size:12.5px;color:var(--muted)}
+mark{background:var(--mark);color:var(--mark-ink);padding:1px 4px;border-radius:4px}
+.stats{font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.checklist{margin:0;padding-left:18px;font-size:13.5px;display:grid;gap:3px}
+
+.composer{position:sticky;bottom:0;background:var(--bg);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));margin-top:14px;display:grid;gap:8px;z-index:4}
+.composer .box{display:flex;gap:8px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:6px}
+.composer textarea{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:16px;resize:none;padding:8px 6px;max-height:160px;min-height:40px}
+.composer textarea:focus{outline:none}
+.mic{width:46px;height:46px;border-radius:14px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none}
+.mic svg{width:22px;height:22px}
+.mic.live{background:var(--bad);animation:pulse 1.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(188,59,52,.45)}100%{box-shadow:0 0 0 12px rgba(188,59,52,0)}}
+.send{width:46px;height:46px;border-radius:14px;background:var(--sunk);display:grid;place-items:center;flex:none}
+.send svg{width:20px;height:20px}
+.send:disabled{opacity:.4}
+.hint{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
+.drillq{font-family:var(--f-display);font-size:21px;font-weight:700;line-height:1.3}
+.timer{display:flex;align-items:center;gap:14px}
+.ring{width:84px;height:84px;flex:none}
+.ring circle{fill:none;stroke-width:7}
+.ring .bgc{stroke:var(--sunk)}
+.ring .fgc{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .9s linear}
+.ring text{font-family:var(--f-mono);font-size:22px;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:10px 16px;border-radius:999px;font-weight:600;background:var(--sunk);display:inline-flex;align-items:center;gap:6px}
+.btn svg{width:16px;height:16px}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.danger{background:var(--bad);color:#fff}
+.btn:disabled{opacity:.45}
+.bands{display:grid;gap:8px}
+.band{display:grid;grid-template-columns:70px 1fr 34px;gap:10px;align-items:center;font-size:13px}
+.band .bar{height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.band .bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.band b{font-family:var(--f-mono);font-weight:500;text-align:right}
+.overall{display:flex;align-items:baseline;gap:8px}
+.overall b{font-family:var(--f-mono);font-size:34px;font-weight:500;line-height:1}
+audio{width:100%;height:40px}
+
+.group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 14px;list-style:none;margin:0}
+.group .phr{padding:8px 0;border-top:1px solid var(--line)}
+.group .phr:first-child{border-top:0}
+.empty{font-size:13px;color:var(--muted);padding:10px 0}
+
+.field{display:grid;gap:6px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.field small{font-size:12px;color:var(--muted)}
+.steps{margin:0;padding-left:20px;font-size:13.5px;display:grid;gap:4px}
+.pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.pill.on{background:var(--good);color:#fff}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;
+  padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:20}
+.tabs .in{display:flex;width:100%;max-width:560px}
+.tabs button{flex:1;display:grid;justify-items:center;gap:2px;font-size:11.5px;color:var(--muted);padding:6px 0;border-radius:12px}
+.tabs button svg{width:22px;height:22px}
+.tabs button[aria-selected="true"]{color:var(--accent);font-weight:600}
+body.in-chat .tabs{display:none}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px;z-index:30;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top" id="top">
+    <div class="brand"><h1><span>Talk</span> Shop</h1></div>
+    <div class="topr">
+      <div class="streak" title="最近 7 天练习情况"><div class="dots" id="dots"></div><span><b id="streakN">0</b> 天</span></div>
+      <button class="iconbtn" id="gear" aria-label="设置"><span data-i="gear"></span></button>
+    </div>
+  </header>
+  <section id="v-practice"></section>
+  <section id="v-chat" hidden></section>
+  <section id="v-drill" hidden></section>
+  <section id="v-phrases" hidden></section>
+  <section id="v-settings" hidden></section>
+</div>
+
+<nav class="tabs" role="tablist">
+  <div class="in">
+    <button role="tab" data-tab="practice" aria-selected="true"><span data-i="chat"></span>情景对话</button>
+    <button role="tab" data-tab="drill" aria-selected="false"><span data-i="timer"></span>60 秒挑战</button>
+    <button role="tab" data-tab="phrases" aria-selected="false"><span data-i="book"></span>短语库</button>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- icons ---------- */
+const ICONS={
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>',
+  speak:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>',
+  slow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+  starOn:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  redo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  timer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>',
+  vol:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  rec:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+};
+document.querySelectorAll('[data-i]').forEach(e=>e.innerHTML=ICONS[e.dataset.i]);
+
+/* ---------- content ----------
+   Each scenario: role, phrases, and a 3-turn script [their line, model answer]. */
+const SCENARIOS=[
+ {id:'intro',t:'项目启动会自我介绍',s:'30 秒讲清你是谁、负责什么',role:'Project lead',
+  ph:[["I'm ___, and I look after ___ on the team.","我是___，在团队里负责___。"],["On this project, I'll mainly be focusing on ___.","这个项目里我主要负责___。"],["Before this, I worked on ___, so I've got some background in ___.","之前做过___，所以对___有些经验。"],["Feel free to reach out to me for anything related to ___.","有___相关的事随时找我。"]],
+  script:[
+   ["Great, let's go around the table. Could you briefly introduce yourself and what you'll be covering on this project?","Hi everyone, I'm Alex. I'm a market analyst on the data team, and on this project I'll mainly be looking after the sales forecasts. Feel free to reach out if you need any numbers."],
+   ["Nice to meet you. Have you worked on anything similar before?","Yes, last year I worked on a similar forecasting project for a European client, so I've got some background in this. The main lesson was to agree on the data sources early."],
+   ["That's useful. What do you need from the rest of us to get started?","Mainly two things. First, access to last year's sales data. And second, a quick call with whoever owns the product roadmap. If I can get those by Friday, I can share a first draft next week."]]},
+ {id:'status',t:'周会进度汇报',s:'先结论，再细节，再风险',role:'Your manager',
+  ph:[["Overall, we're on track.","总体进度正常。"],["The main thing this week was ___.","这周主要完成了___。"],["One thing I want to flag is ___.","有一点需要提醒大家：___。"],["Next week, I'm planning to ___.","下周计划___。"]],
+  script:[
+   ["Thanks for joining. Can you give us a quick update on where things are with your part of the project?","Sure. Overall, we're on track. The main thing this week was finishing the data cleaning. One thing I want to flag is a delay from one supplier, which might push the dashboard back by two days."],
+   ["How serious is that delay?","It's manageable. It only affects one data source, and I've already asked them for a firm date. Worst case, we launch with last month's numbers and update them later."],
+   ["OK. And what's the plan for next week?","Next week I'm planning to finish the dashboard and run a quick review with the sales team on Thursday. I'll send everyone a short update after that."]]},
+ {id:'delay',t:'向客户解释延期',s:'承认、说明原因、给新时间',role:'Client',
+  ph:[["I completely understand your frustration.","完全理解您的不满。"],["The delay was caused by ___.","延误是因为___。"],["We can have it to you by ___ at the latest.","最迟___给到您。"],["In the meantime, I can send you ___.","在此期间我可以先发___给您。"]],
+  script:[
+   ["I was told we'd have the report by Friday. It's Monday now. What's going on?","I completely understand your frustration, and I'm sorry about the delay. Data from one of our sources arrived late, and we didn't want to send you numbers we couldn't stand behind. We can have the full report to you by Wednesday at the latest."],
+   ["Wednesday? We have a board meeting on Tuesday.","I see. In that case, how about I send you a summary of the key findings by Monday evening? That should cover what you need for the board, and the full report will follow on Wednesday."],
+   ["OK, but I need to know this won't happen again.","That's completely fair. Going forward, we'll flag any risk to the deadline at least three days in advance, so there are no surprises. I'll also send you a short weekly progress update."]]},
+ {id:'disagree',t:'委婉表达不同意见',s:'先认可，再提出顾虑和替代方案',role:'Colleague',
+  ph:[["I see where you're coming from, but ___.","我理解你的出发点，不过___。"],["My concern is that ___.","我担心的是___。"],["Have we considered ___ instead?","我们有没有考虑过___？"],["What if we ___ first and see how they respond?","不如先___，看看对方反应？"]],
+  script:[
+   ["Honestly, I think we should just cut the price by twenty percent to win this deal. You agree, right?","I see where you're coming from. Winning this deal matters. But my concern is that a twenty percent cut sets a price we'll be stuck with next year. Have we considered offering extra services instead?"],
+   ["But they said our price is too high. What else can we do?","What if we offer a smaller discount, say five percent, but tie it to a two-year contract? That way they get a better deal, and we get more security."],
+   ["Hmm. And if they still say no?","Then we can go back with a second option, but at least we'll know how much they really care about price. I'd rather not give everything away in the first round."]]},
+ {id:'clarify',t:'需求不清时追问',s:'复述 + 具体化问题',role:'Client',
+  ph:[["Just to make sure I understand, do you mean ___?","确认一下，您是指___吗？"],["Could you give me an example of ___?","能举个___的例子吗？"],["When you say ___, are we talking about ___ or ___?","您说的___是指___还是___？"],["So the priority is ___, is that right?","所以优先的是___，对吗？"]],
+  script:[
+   ["We need the dashboard to feel more, you know, dynamic. Can your team do that?","Absolutely, we can help with that. Just to make sure I understand, when you say 'dynamic', do you mean the data updates automatically, or that users can filter and explore it themselves?"],
+   ["Both, I guess. Our team just finds it boring right now.","Got it. Could you give me an example of a question your team tries to answer but can't easily do today? That would help us decide what to change first."],
+   ["Well, they want to compare regions quickly.","That makes sense. So the priority is a quick way to compare regions side by side, with live data. Is that right? If so, we can send you a mock-up by next Friday."]]},
+ {id:'data',t:'讲解一组数据',s:'一句话结论 + 两个支撑点',role:'Director',
+  ph:[["The key takeaway is that ___.","核心结论是___。"],["Sales rose by ___ percent year on year.","销量同比增长了___%。"],["This was mainly driven by ___.","主要是由___带动的。"],["Looking ahead, we expect ___.","展望未来，我们预计___。"]],
+  script:[
+   ["OK, I've seen the chart. What's the key takeaway from these sales numbers?","The key takeaway is that sales are growing, but almost all of the growth is coming from electric models. Sales rose by twelve percent year on year, and EVs drove more than two thirds of that."],
+   ["Interesting. Is that growth sustainable?","In the short term, yes. Demand is strong and prices are falling. The main risk is subsidies. If they're reduced next year, we could see growth slow to around five percent."],
+   ["So what do you recommend?","I'd recommend we keep investing in the EV line, but also prepare a plan B in case subsidies change. I'm happy to put together two scenarios for next month's meeting."]]},
+ {id:'deadline',t:'争取更合理的截止时间',s:'不直接说 no，给选项',role:'Your manager',
+  ph:[["I want to make sure we deliver something solid.","我想确保交付的质量过关。"],["Realistically, I can get ___ done by ___.","实际来看，___前能完成___。"],["___ would be more realistic.","___会更现实一些。"],["Would it help if I prioritised ___?","我先优先做___会有帮助吗？"]],
+  script:[
+   ["We really need this finished by Wednesday. Can you make that work?","I want to make sure we deliver something solid. Realistically, I can get the main analysis done by Wednesday, but the full report with all the charts would be more realistic by Friday."],
+   ["The client is expecting it Wednesday, though.","Understood. Would it help if I sent the client the key findings on Wednesday, and the full report on Friday? That way they can get started, and the quality doesn't suffer."],
+   ["OK, let's do that. Anything you need from me?","Yes, it would really help if you could let the client know about the two-step plan. And if possible, could someone cover the weekly report this week so I can focus on this?"]]},
+ {id:'smalltalk',t:'会前寒暄',s:'自然接话，再把话抛回去',role:'Client',
+  ph:[["Pretty good, thanks. It's been a busy one.","挺好的，就是有点忙。"],["No rush at all.","不着急。"],["How about you? Anything exciting on your side?","你呢？最近有什么新鲜事？"],["Shall we get started?","那我们开始吧？"]],
+  script:[
+   ["Hi! Sorry, just give me a sec to get my screen sorted. So, how's your week going so far?","No rush at all. Pretty good, thanks. It's been a busy week, but in a good way. How about you? Anything exciting on your side?"],
+   ["Oh, we just got back from a team offsite in the mountains.","Oh nice, that sounds great. Did you get to do any hiking, or was it mostly meetings? I could definitely use some fresh air myself."],
+   ["A bit of both! OK, shall we get started?","Sounds good. As I mentioned in my email, today I'd like to walk you through the first results and then hear your thoughts. Does that work for you?"]]},
+ {id:'tough',t:'应对尖锐提问',s:'不辩解，讲方法和改进',role:'Senior stakeholder',
+  ph:[["That's a fair question.","这个问题问得很合理。"],["Last quarter, we underestimated ___.","上季度我们低估了___。"],["Since then, we've changed ___.","之后我们调整了___。"],["I'd be happy to walk you through the assumptions.","我可以带您过一遍假设。"]],
+  script:[
+   ["Your forecast was quite far off last quarter. Why should we trust this one?","That's a fair question. Last quarter, we underestimated how quickly prices would fall. Since then, we've changed two things: we update prices every month, and we test our numbers against three scenarios instead of one."],
+   ["And did those changes actually help?","When we ran the new method on last year's data, the error dropped from about eight percent to under three percent. I'd be happy to walk you through the assumptions after the meeting."],
+   ["OK. What would make you change this forecast?","Good question. The two things I'm watching most closely are interest rates and subsidy policy. If either moves significantly, we'll update the forecast and let you know straight away."]]},
+ {id:'wrap',t:'会议收尾、确认下一步',s:'总结 + 分工 + 时间点',role:'Meeting chair',
+  ph:[["To sum up, we agreed on three things.","总结一下，我们达成了三点共识。"],["___ will take care of ___ by ___.","___负责在___前完成___。"],["I'll send round a short recap after this call.","会后我会发一份简短纪要。"],["Did I miss anything?","我有遗漏的吗？"]],
+  script:[
+   ["We're almost out of time. Could you quickly sum up the next steps for everyone?","Sure. To sum up, we agreed on three things. First, Tom will update the budget by Friday. Second, I'll share the revised timeline tomorrow. And third, we'll meet again next Tuesday to review."],
+   ["Great. Who's going to send round the notes?","I can do that. I'll send round a short recap after this call, with the action items and owners. If I've missed anything, just reply and I'll update it."],
+   ["Perfect. Anything else before we finish?","Just one thing. Could everyone check their availability for the workshop in December? Other than that, thanks everyone. That was really helpful."]]}
+];
+
+const DRILLS=[
+ ["Explain what your job involves to someone outside your industry.","自我介绍","Sure. In a nutshell, I help companies understand where their market is heading. I collect sales and production data, clean it up, and turn it into forecasts and reports. For example, a car maker might want to know how many electric cars will be sold next year. My job is to give them a number they can trust, and explain the story behind it. It's a mix of working with data and talking to clients, which is the part I enjoy most."],
+ ["Describe a project you're proud of and what your role was.","经历","One project I'm really proud of is a dashboard I built last year. Before that, our team spent hours every month copying numbers into spreadsheets. I designed a simple tool that pulled the data automatically and showed the key trends in one place. My role was to plan it, build it and train the team. In the end, it saved us about two days a month, and our manager now uses it in client meetings."],
+ ["What's one trend in your industry that people should pay attention to?","观点","I think one trend people should watch is how fast electric vehicles are spreading in emerging markets. Everyone talks about China and Europe, but some countries in Southeast Asia and Latin America are moving surprisingly quickly. The reason is simple: cheaper models are arriving, and governments are offering incentives. If that continues, the global market could look very different in five years, so it's worth paying attention now, not later."],
+ ["Your client says your price is too high. Respond.","谈判","I understand, price is always important. Can I ask what you're comparing us with? The reason I ask is that our price includes things others charge extra for, like monthly updates and analyst support. If budget is the main issue, we could start with a smaller package and expand once you've seen the value. What matters most to you in this project?"],
+ ["Walk me through how you would prepare for an important meeting.","流程","First, I make sure I know the goal of the meeting: what decision do we need to make? Then I check who's coming and what they care about. Next, I prepare a one-page summary with the key numbers, and I think about the questions people might ask. Finally, I send a short agenda the day before, so nobody's surprised. On the day, I try to arrive a few minutes early to set everything up."],
+ ["Tell me about a time you had to deal with a difficult colleague.","经历","A while ago, I worked with a colleague who often missed deadlines, which affected my work. At first I was frustrated, but instead of complaining, I asked him for a quick coffee. It turned out he had too many projects at once. We agreed on clearer handover dates, and I offered to help with one task. After that, things improved a lot. What I learned is that it's better to ask questions before making assumptions."],
+ ["Pitch a new tool or process that would save your team time.","提案","I'd like to suggest we start using a shared tracker for client requests. Right now, requests come in through email, chat and phone, and things sometimes get lost. With one simple tracker, everyone can see who's working on what and when it's due. It's free to set up, and it would only take an hour to train the team. I think it could save us a few hours a week and make our clients happier."],
+ ["Explain a recent piece of data or news from your field and why it matters.","数据","One thing that caught my attention recently is how quickly electric cars are growing as a share of new car sales. It matters because it shows EVs are no longer a niche product. They're becoming the default choice for a lot of buyers. For car makers, that means competition is moving to price and technology, and companies that can't keep up could lose market share very quickly."],
+ ["What would you do in your first month if you joined a new team?","规划","In my first month, I'd focus on listening and learning. I'd meet everyone on the team one to one to understand their work and their challenges. I'd also get to know our main clients and the tools we use. By the end of the month, I'd hope to deliver one small but useful piece of work, just to build trust. I think it's important not to change too much too quickly."],
+ ["Persuade your manager to let you work from home two days a week.","说服","I'd like to ask about working from home two days a week. Over the past few months, I've noticed I'm most productive on deep-focus tasks, like modelling and writing reports, when I'm not interrupted. I'd still be in the office for all team meetings and client calls. Could we try it for one month and then review? If my output or communication suffers, I'm happy to go back to the current arrangement."],
+ ["Summarise the last meeting you attended for someone who missed it.","总结","Sure, here's a quick summary. The main topic was next year's budget. We agreed to cut travel costs by ten percent and move that money into new software. There was some disagreement about the timeline, so Sarah will check with finance and come back to us on Friday. The next meeting is on the fifth. You don't need to do anything yet, but it's worth reading the slides she sent."],
+ ["What's the biggest challenge your team faces right now, and how would you solve it?","问题解决","I'd say our biggest challenge right now is that we spend too much time on manual work. A lot of our data still needs to be checked and cleaned by hand, which slows everything down. To solve it, I'd start by listing the tasks we repeat every month, then automate the simplest ones first. That would free up time for analysis, which is where we really add value for our clients."],
+ ["Introduce your company to a potential partner in under a minute.","介绍","Thanks for your time. We're a data and analytics company. We help businesses make better decisions by giving them reliable market data and expert analysis. For example, in the automotive sector, we track sales, production and technology trends in dozens of countries. What makes us different is the combination of data and people. Our analysts don't just give you numbers, they explain what those numbers mean for your business."],
+ ["Explain a mistake you made at work and what you learned from it.","经历","Early in my career, I sent a client a report with an error in one of the main charts. I only noticed the next day. I called the client immediately, explained what happened, and sent a corrected version within an hour. They appreciated the honesty. Since then, I always ask a colleague to check the key numbers before anything goes out. It taught me that mistakes happen, but how you handle them matters more."],
+ ["Should companies use AI to make hiring decisions? Give your view.","观点","I think AI can be useful in hiring, but it shouldn't make the final decision. On the positive side, it can sort through hundreds of applications quickly and reduce some human bias. However, AI can also copy the biases in old data, and it can't really judge things like attitude or potential. So in my view, AI should be a tool that supports recruiters, not one that replaces them."]
+];
+
+const BANK=[
+ {g:'争取思考时间（不再“呃……”）',p:[["That's a good question. Let me think for a second.","好问题，我想一下。"],["Off the top of my head, I'd say ___.","我直觉上觉得___。"],["How can I put this?","怎么说呢……"],["The way I see it, ___.","在我看来，___。"],["Let me come back to that in a moment.","这个我等下再回来讲。"]]},
+ {g:'没听清、要确认',p:[["Sorry, could you say that again?","抱歉，能再说一遍吗？"],["Just to clarify, are you asking about ___?","确认一下，您问的是___吗？"],["What do you mean by ___?","您说的___具体是指？"],["If I understand correctly, ___.","如果我没理解错的话，___。"]]},
+ {g:'委婉反对 / 提顾虑',p:[["I'm not sure that would work, because ___.","我不太确定可行，因为___。"],["That's one way to look at it. Another way is ___.","这是一种角度，另一种是___。"],["I'd push back a little on that.","这一点我想稍微提点不同意见。"],["I hear you, but have we thought about ___?","明白，但我们考虑过___吗？"]]},
+ {g:'给出结构（讲话不乱）',p:[["There are two main reasons. First, ___. Second, ___.","主要有两个原因。第一___，第二___。"],["Let me start with the big picture.","我先说整体情况。"],["The bottom line is ___.","归根结底，___。"],["To put it simply, ___.","简单来说，___。"]]},
+ {g:'跟进 & 收尾',p:[["I'll follow up with an email by end of day.","我今天下班前发邮件跟进。"],["Let's take this offline.","这个我们会后单独聊。"],["Does that work for everyone?","大家都没问题吧？"],["Thanks, everyone. That was really helpful.","谢谢大家，很有帮助。"]]}
+];
+
+/* ---------- storage ---------- */
+const KEY='talkshop.v1';
+let store={saved:[],days:[],done:{},voice:true,ai:{provider:'deepseek',base:'https://api.deepseek.com',model:'deepseek-chat',key:''}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){store=Object.assign(store,s);store.ai=Object.assign({provider:'deepseek',base:'https://api.deepseek.com',model:'deepseek-chat',key:''},s.ai||{})}}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+const dayKey=d=>{const x=new Date(d);return x.getFullYear()+'-'+(x.getMonth()+1)+'-'+x.getDate()};
+function markPracticed(){const k=dayKey(Date.now());if(!store.days.includes(k))store.days.push(k);store.days=store.days.slice(-60);persist();renderStreak()}
+function renderStreak(){
+  const dots=document.getElementById('dots');dots.replaceChildren();
+  for(let i=6;i>=0;i--){dots.append(h('i',{class:store.days.includes(dayKey(Date.now()-i*864e5))?'on':''}))}
+  let n=0,i=store.days.includes(dayKey(Date.now()))?0:1;
+  while(i<400&&store.days.includes(dayKey(Date.now()-i*864e5))){n++;i++}
+  document.getElementById('streakN').textContent=n;
+}
+const aiOn=()=>!!(store.ai&&store.ai.key&&store.ai.base&&store.ai.model);
+function isSaved(en){return store.saved.some(p=>p[0]===en)}
+function toggleSave(en,zh){if(isSaved(en))store.saved=store.saved.filter(p=>p[0]!==en);else store.saved.unshift([en,zh||'']);persist();toast(isSaved(en)?'已收藏到短语库':'已取消收藏')}
+
+/* ---------- helpers ---------- */
+function h(tag,props,...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(props||{})){if(k==='class')e.className=v;else if(k==='html')e.innerHTML=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?'':v)}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)))}return e}
+const ico=n=>h('span',{html:ICONS[n],style:'display:contents'});
+let toastT;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),2000)}
+const wc=s=>(s.trim().match(/[A-Za-z0-9'’-]+/g)||[]).length;
+function starBtn(en,zh,cls){const b=h('button',{class:cls||'mini','aria-label':'收藏'});const draw=()=>{b.classList.toggle('starred',isSaved(en));b.replaceChildren(ico(isSaved(en)?'starOn':'star'));if(cls)b.append('收藏')};draw();b.addEventListener('click',()=>{toggleSave(en,zh);draw()});return b}
+
+/* ---------- voice: text-to-speech ---------- */
+let voices=[];
+function loadVoices(){try{voices=speechSynthesis.getVoices()}catch(e){}}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function pickVoice(){
+  const en=voices.filter(v=>/^en[-_]/i.test(v.lang));
+  const pref=[/Samantha/i,/Daniel/i,/Karen/i,/Serena/i,/Google US English/i,/Google UK English Female/i,/Microsoft (Aria|Jenny|Libby)/i];
+  for(const p of pref){const v=en.find(v=>p.test(v.name));if(v)return v}
+  return en.find(v=>/en[-_](US|GB)/i.test(v.lang))||en[0]||null;
+}
+function speak(text,slow){
+  if(!('speechSynthesis' in window)){toast('这个浏览器不支持朗读');return}
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/_+/g,'something'));const v=pickVoice();if(v){u.voice=v;u.lang=v.lang}else u.lang='en-US';u.rate=slow?0.72:0.95;speechSynthesis.speak(u)}catch(e){toast('朗读失败')}
+}
+
+/* ---------- voice: speech-to-text (where the browser offers it) ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let srBroken=false;
+function srAvailable(){return !!SR&&!srBroken}
+
+/* ---------- AI (optional, OpenAI-compatible endpoint) ---------- */
+const PROVIDERS={
+  deepseek:{name:'DeepSeek（推荐，国内可用）',base:'https://api.deepseek.com',model:'deepseek-chat',site:'https://platform.deepseek.com'},
+  moonshot:{name:'Kimi / Moonshot',base:'https://api.moonshot.cn/v1',model:'moonshot-v1-8k',site:'https://platform.moonshot.cn'},
+  custom:{name:'其他（OpenAI 兼容）',base:'',model:'',site:''}
+};
+async function aiJSON(prompt){
+  const c=store.ai;const url=c.base.replace(/\/+$/,'')+'/chat/completions';
+  let r;
+  try{r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+c.key},
+    body:JSON.stringify({model:c.model,temperature:0.6,response_format:{type:'json_object'},
+      messages:[{role:'system',content:'You are a helpful English speaking coach. Always answer with one valid JSON object and nothing else.'},{role:'user',content:prompt}]})})}
+  catch(e){throw {code:'network'}}
+  if(!r.ok){let msg='';try{msg=(await r.json()).error?.message||''}catch(e){}throw {code:'http',status:r.status,msg}}
+  const j=await r.json();let t=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'';
+  t=t.trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'');
+  const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a>=0&&b>a)t=t.slice(a,b+1);
+  try{return JSON.parse(t)}catch(e){throw {code:'parse'}}
+}
+function aiErr(e){
+  if(e.code==='network')return '连不上 AI 服务。检查网络，或在设置里换一个服务商。';
+  if(e.code==='parse')return 'AI 返回的格式不对，再发一次试试。';
+  if(e.status===401)return 'API key 不对。去设置里重新粘贴一下。';
+  if(e.status===402)return 'AI 账户余额不足，去服务商网站充值后再试。';
+  if(e.status===429)return '请求太频繁或额度用完，稍等再试。';
+  return 'AI 请求失败（'+(e.status||'')+'）'+(e.msg?'：'+e.msg:'');
+}
+
+/* ---------- composer (type / keyboard dictation / browser speech) ---------- */
+function makeComposer({placeholder,onSend}){
+  const ta=h('textarea',{rows:'1',placeholder,autocapitalize:'sentences',autocomplete:'off',spellcheck:'false'});
+  const mic=h('button',{class:'mic','aria-label':'开始说'},ico('mic'));
+  const send=h('button',{class:'send','aria-label':'发送',disabled:true},ico('send'));
+  const left=h('span',{});const right=h('span',{class:'mono'});
+  const el=h('div',{class:'composer'},h('div',{class:'box'},ta,mic,send),h('div',{class:'hint'},left,right));
+  let rec=null,listening=false,base='',finals='',t0=0,ms=0,busy=false;
+  const c={el,ta,
+    reset(){stop();ta.value='';base=finals='';ms=0;fit();upd()},
+    setBusy(b){busy=b;upd()},
+    refresh(){mic.hidden=!srAvailable();left.textContent=srAvailable()?'点麦克风开口说，说完再点一次；也可以用键盘语音':'用手机键盘上的麦克风说英文，或直接打字'},
+    stop
+  };
+  function stop(){if(rec&&listening){try{rec.stop()}catch(e){}}}
+  function fit(){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px'}
+  function upd(){const n=wc(ta.value);right.textContent=n?n+' words'+(ms>3000&&!listening?' · '+Math.round(n/(ms/60000))+' wpm':''):'';send.disabled=busy||listening||!ta.value.trim()}
+  function setLive(on){listening=on;mic.classList.toggle('live',on);mic.replaceChildren(ico(on?'stop':'mic'));upd()}
+  ta.addEventListener('input',()=>{base=ta.value;finals='';fit();upd()});
+  mic.addEventListener('click',()=>{
+    if(listening){stop();return}
+    try{
+      rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=true;
+      base=ta.value?ta.value.replace(/\s*$/,' '):'';finals='';
+      rec.onresult=ev=>{let interim='';for(let i=ev.resultIndex;i<ev.results.length;i++){const r=ev.results[i];if(r.isFinal)finals+=r[0].transcript+' ';else interim+=r[0].transcript}
+        ta.value=(base+finals+interim).trim();fit();upd()};
+      rec.onerror=ev=>{const er=ev.error;
+        if(er==='not-allowed'||er==='service-not-allowed'){toast('没有麦克风/语音识别权限，改用键盘上的语音输入吧');srBroken=true;refreshAll()}
+        else if(er==='network'){toast('语音识别连不上网络，改用键盘上的语音输入吧');srBroken=true;refreshAll()}
+        else if(er!=='no-speech'&&er!=='aborted')toast('语音识别出错：'+er)};
+      rec.onend=()=>{if(listening){ms+=Date.now()-t0}setLive(false);base=ta.value;finals=''};
+      rec.start();t0=Date.now();setLive(true);
+    }catch(e){srBroken=true;refreshAll();toast('这个浏览器不能直接识别语音，用键盘上的麦克风吧')}
+  });
+  send.addEventListener('click',()=>{const t=ta.value.trim();if(!t||busy)return;stop();onSend(t,{ms})});
+  comps.push(c);c.refresh();return c;
+}
+const comps=[];function refreshAll(){comps.forEach(c=>c.refresh())}
+
+/* ---------- views ---------- */
+let cur='practice';
+const V={practice:v('practice'),chat:v('chat'),drill:v('drill'),phrases:v('phrases'),settings:v('settings')};
+function v(n){return document.getElementById('v-'+n)}
+function show(name){
+  comps.forEach(c=>c.stop());recorder.stop();try{speechSynthesis.cancel()}catch(e){}
+  cur=name;for(const k in V)V[k].hidden=k!==name;
+  document.body.classList.toggle('in-chat',name==='chat'||name==='settings');
+  document.getElementById('top').hidden=name==='chat'||name==='settings';
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===name)));
+  if(name==='practice')renderPractice();if(name==='phrases')renderPhrases();if(name==='settings')renderSettings();
+  if(name==='drill'){if(!drill.q)newDrill();else renderDrill()}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+document.getElementById('gear').addEventListener('click',()=>show('settings'));
+
+function phraseRow(en,zh){
+  return h('li',{class:'phr'},h('span',{class:'en'},en),zh?h('span',{class:'zh'},zh):null,
+    h('span',{class:'acts'},h('button',{class:'mini','aria-label':'朗读',onclick:()=>speak(en)},ico('speak')),starBtn(en,zh)));
+}
+function modeNote(){
+  return aiOn()
+    ?h('div',{class:'notice'},h('span',{class:'pill on'},'AI 点评已开启'),' 每句回答都会得到改错、更地道的说法，对话也会跟着你的回答走。')
+    :h('div',{class:'notice'},h('b',{},'离线练习模式'),'：每轮说完可以看参考说法、听、跟读。想要 AI 帮你改错打分，点右上角 ⚙ 填一个 API key（可选）。');
+}
+
+/* practice list */
+function renderPractice(){
+  const vv=V.practice;vv.replaceChildren();
+  vv.append(modeNote());
+  const pick=SCENARIOS[Math.floor(Date.now()/864e5)%SCENARIOS.length];
+  vv.append(h('div',{class:'today'},h('small',{},'今日推荐'),h('h2',{},pick.t),h('p',{},'对方：'+pick.role+' · '+pick.s),h('button',{onclick:()=>openChat(pick)},'开始对话')));
+  vv.append(h('div',{class:'eyebrow'},'全部情景 · '+SCENARIOS.length));
+  const list=h('div',{class:'scen'});
+  SCENARIOS.forEach((s,i)=>list.append(h('button',{onclick:()=>openChat(s)},
+    h('span',{class:'num'},String(i+1).padStart(2,'0')),
+    h('span',{style:'min-width:0'},h('div',{class:'t'},s.t),h('div',{class:'s'},s.s)),
+    h('span',{class:'who'+(store.done[s.id]?' done':'')},store.done[s.id]?'练过 '+store.done[s.id]+' 次':s.role))));
+  vv.append(list);
+  vv.append(h('p',{class:'muted',style:'font-size:12.5px;margin-top:18px'},'玩法：对方先开口，你用英文回答（打字或用键盘语音都行）。说完看参考说法，听一遍、慢速跟读一遍，再进入下一轮。每个情景 3 轮。'));
+}
+
+/* chat */
+let chat=null;
+const chatComp=makeComposer({placeholder:'用英文回答…',onSend:sendTurn});
+function openChat(s){chat={s,step:0,turns:[{who:'them',text:s.script[0][0],step:0}],pending:false,err:'',finished:false,ai:aiOn()};show('chat');chatComp.reset();renderChat();if(store.voice)speak(s.script[0][0])}
+function renderChat(){
+  const vv=V.chat,s=chat.s;vv.replaceChildren();
+  const voiceBtn=h('button',{class:'iconbtn'+(store.voice?' on':''),'aria-label':'自动朗读对方的话','aria-pressed':String(store.voice)},ico('vol'));
+  voiceBtn.addEventListener('click',()=>{store.voice=!store.voice;persist();voiceBtn.classList.toggle('on',store.voice);voiceBtn.setAttribute('aria-pressed',String(store.voice));toast(store.voice?'自动朗读：开':'自动朗读：关')});
+  vv.append(h('div',{class:'chathead'},h('button',{class:'iconbtn','aria-label':'返回',onclick:()=>show('practice')},ico('back')),
+    h('div',{class:'ttl'},h('h2',{},s.t),h('div',{},'对方：'+s.role+(chat.ai?' · AI 点评':' · 第 '+Math.min(chat.step+1,3)+'/3 轮'))),voiceBtn));
+  const ul=h('ul',{});s.ph.forEach(p=>ul.append(phraseRow(p[0],p[1])));
+  const det=h('details',{class:'brief'},h('summary',{},'可以用的句型 · '+s.s),ul);if(chat.turns.length<2)det.open=true;vv.append(det);
+  const th=h('div',{class:'thread'});
+  const lastMe=chat.turns.map(t=>t.who).lastIndexOf('me');
+  chat.turns.forEach((t,i)=>{
+    if(t.who==='them')th.append(h('div',{class:'msg them'},h('div',{class:'who'},s.role),h('div',{class:'say'},h('p',{},t.text),h('button',{class:'mini','aria-label':'朗读',onclick:()=>speak(t.text)},ico('speak')))));
+    else{th.append(h('div',{class:'msg me'},h('div',{class:'who'},'You'),t.text));if(t.fb||t.model)th.append(feedbackCard(t,i===lastMe&&!chat.pending))}
+  });
+  if(chat.pending)th.append(h('div',{class:'msg them'},h('div',{class:'typing','aria-label':'正在看你的回答'},h('i'),h('i'),h('i'))));
+  if(chat.err)th.append(h('div',{class:'notice'},chat.err));
+  if(chat.finished)th.append(h('div',{class:'card'},h('h3',{style:'font-size:17px'},'这个情景练完了'),
+    h('p',{class:'muted',style:'margin:0;font-size:13.5px'},'建议：不看文字，再把 3 轮完整说一遍。第二遍通常会顺很多。'),
+    h('div',{class:'btnrow'},h('button',{class:'btn primary',onclick:()=>openChat(s)},'再练一遍'),h('button',{class:'btn',onclick:()=>show('practice')},'换个情景'))));
+  vv.append(th);
+  chatComp.setBusy(chat.pending);
+  if(!chat.finished)vv.append(chatComp.el);
+}
+function feedbackCard(t,isLast){
+  const card=h('div',{class:'fb'});
+  if(t.fb){
+    const f=t.fb;const sc=Math.max(1,Math.min(10,Math.round(+f.score||0)));
+    card.append(h('div',{class:'row'},h('span',{class:'score '+(sc>=8?'hi':sc>=6?'mid':'lo')},sc+'/10'),h('span',{},f.verdict_zh||'')));
+    if(f.better)card.append(betterBox('更地道的说法',f.better));
+    const fx=Array.isArray(f.fixes)?f.fixes.slice(0,3):[];
+    if(fx.length){const ul=h('ul',{class:'fixes'});fx.forEach(x=>ul.append(h('li',{},h('s',{},x.wrong||''),' → ',h('b',{},x.right||''),h('span',{},x.why_zh||''))));card.append(h('span',{class:'lbl'},'改一改'),ul)}
+    if(f.chunk)card.append(h('div',{style:'display:grid;gap:4px'},h('span',{class:'lbl'},'背下这句'),
+      h('div',{class:'row',style:'gap:4px'},h('span',{style:'flex:1;min-width:0'},h('mark',{},f.chunk),f.chunk_zh?h('span',{class:'muted',style:'font-size:12.5px;margin-left:6px'},f.chunk_zh):null),
+        h('button',{class:'mini','aria-label':'朗读',onclick:()=>speak(f.chunk)},ico('speak')),starBtn(f.chunk,f.chunk_zh||''))));
+    if(f.fluency_tip_zh)card.append(h('div',{style:'font-size:13.5px'},h('span',{class:'lbl'},'表达建议 '),f.fluency_tip_zh));
+  }else if(t.model){
+    card.append(betterBox('参考说法',t.model));
+    card.append(h('div',{},h('span',{class:'lbl'},'自己对照一下'),h('ul',{class:'checklist'},
+      h('li',{},'第一句有没有直接回应对方的问题？'),h('li',{},'有没有用到上面句型里的表达？'),h('li',{},'把参考说法慢速跟读一遍，再用自己的话说一遍。'))));
+  }
+  const st=[];if(t.stats){st.push(t.stats.words+' 词');if(t.stats.wpm)st.push(t.stats.wpm+' 词/分钟'+(t.stats.wpm<90?'（可以再顺一点）':t.stats.wpm>170?'（稍微放慢）':'（语速不错）'))}
+  const row=h('div',{class:'stats'},h('span',{},st.join(' · ')));
+  if(isLast)row.append(h('button',{class:'chip primary',onclick:retryTurn},ico('redo'),'重说这句'));
+  card.append(row);
+  return card;
+}
+function betterBox(label,text){
+  return h('div',{class:'better'},h('span',{class:'lbl'},label),h('p',{},text),
+    h('div',{class:'acts'},h('button',{class:'chip',onclick:()=>speak(text)},ico('speak'),'听'),h('button',{class:'chip',onclick:()=>speak(text,true)},ico('slow'),'慢速跟读'),starBtn(text,'','chip')));
+}
+function retryTurn(){
+  const i=chat.turns.map(t=>t.who).lastIndexOf('me');if(i<0)return;
+  chat.step=chat.turns[i].step;chat.turns=chat.turns.slice(0,i);chat.err='';chat.finished=false;chatComp.reset();renderChat();
+  const last=chat.turns[chat.turns.length-1];if(last&&store.voice)speak(last.text);
+}
+async function sendTurn(text,meta){
+  if(chat.pending)return;
+  const s=chat.s,words=wc(text),wpm=meta.ms>3000?Math.round(words/(meta.ms/60000)):0;
+  const turn={who:'me',text,stats:{words,wpm},step:chat.step};
+  chat.turns.push(turn);chat.err='';chatComp.reset();
+  const myTurns=chat.turns.filter(t=>t.who==='me').length;
+  if(myTurns===1){store.done[s.id]=(store.done[s.id]||0)+1;persist()}
+  markPracticed();
+  if(!chat.ai){
+    turn.model=s.script[chat.step][1];
+    chat.step++;
+    if(chat.step<s.script.length){const next=s.script[chat.step][0];chat.turns.push({who:'them',text:next,step:chat.step});renderChat();scrollEnd();if(store.voice)setTimeout(()=>speak(next),300)}
+    else{chat.finished=true;renderChat();scrollEnd()}
+    return;
+  }
+  chat.pending=true;renderChat();scrollEnd();
+  const convo=chat.turns.map(t=>(t.who==='them'?s.role.toUpperCase():'LEARNER')+': '+t.text).join('\n');
+  const prompt=`You are an English speaking coach running a short business role-play with a Chinese professional (around IELTS 6.5). They understand English well but hesitate and translate from Chinese when speaking. Help them sound natural, confident and clear in real workplace conversations.
+
+Scenario: ${s.t} (${s.s})
+You play: ${s.role}
+
+Conversation so far:
+${convo}
+
+The learner's latest reply may come from speech-to-text, so ignore punctuation, capitalisation and small recognition glitches. It has ${words} words${wpm?`, spoken at about ${wpm} words per minute`:''}. This is learner turn ${myTurns}.${myTurns>=6?' Start wrapping the conversation up politely.':''}
+
+Return ONLY a JSON object:
+{
+ "feedback": {
+  "score": integer 1-10, how natural, clear and appropriate it sounds in a real business setting,
+  "verdict_zh": one short encouraging sentence in Simplified Chinese naming the main strength or problem,
+  "better": the learner's reply rewritten as confident, natural spoken business English. Keep their meaning and roughly their length; everyday phrasing a fluent colleague would actually say,
+  "fixes": up to 3 items [{"wrong": exact words they said, "right": correction, "why_zh": short reason in Chinese}] for grammar, word choice or Chinglish; [] if none,
+  "chunk": one short reusable phrase from "better" worth memorising,
+  "chunk_zh": Chinese meaning of chunk,
+  "fluency_tip_zh": one practical tip in Chinese about structure or delivery for this situation
+ },
+ "reply": your next line in character as ${s.role}: 1-2 natural spoken sentences that react to what they said and keep the conversation going
+}`;
+  try{
+    const r=await aiJSON(prompt);
+    turn.fb=r.feedback||{};chat.pending=false;
+    if(r.reply){chat.turns.push({who:'them',text:String(r.reply),step:chat.step})}
+    renderChat();scrollEnd();if(store.voice&&r.reply)speak(String(r.reply));
+  }catch(e){chat.turns.pop();chat.pending=false;chat.err=aiErr(e);renderChat();chatComp.ta.value=text;chatComp.ta.dispatchEvent(new Event('input'))}
+}
+function scrollEnd(){requestAnimationFrame(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}))}
+
+/* ---------- recorder (hear yourself) ---------- */
+const recorder={mr:null,chunks:[],url:'',stream:null,on:false,
+  ok(){return !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder)},
+  async start(){if(!this.ok())return false;
+    try{this.stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){toast('没有麦克风权限，可以只计时练习');return false}
+    this.chunks=[];if(this.url){URL.revokeObjectURL(this.url);this.url=''}
+    const type=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t));
+    this.mr=type?new MediaRecorder(this.stream,{mimeType:type}):new MediaRecorder(this.stream);
+    this.mr.ondataavailable=e=>{if(e.data&&e.data.size)this.chunks.push(e.data)};
+    this.mr.onstop=()=>{const blob=new Blob(this.chunks,{type:this.mr.mimeType||'audio/mp4'});this.url=URL.createObjectURL(blob);this.stream.getTracks().forEach(t=>t.stop());this.on=false;if(cur==='drill')renderDrill()};
+    this.mr.start();this.on=true;return true},
+  stop(){if(this.mr&&this.on){try{this.mr.stop()}catch(e){}}}
+};
+
+/* ---------- drill ---------- */
+const drill={q:null,i:-1,phase:'ready',left:60,timer:null,result:null,err:'',pending:false,showModel:false};
+const drillComp=makeComposer({placeholder:'把你说的内容用键盘语音转成文字，发给 AI 打分…',onSend:submitDrill});
+function newDrill(keep){let i=drill.i;if(!keep){do{i=Math.floor(Math.random()*DRILLS.length)}while(i===drill.i&&DRILLS.length>1)}
+  clearInterval(drill.timer);recorder.stop();if(recorder.url){URL.revokeObjectURL(recorder.url);recorder.url=''}
+  Object.assign(drill,{i,q:DRILLS[i],phase:'ready',left:60,result:null,err:'',pending:false,showModel:false});drillComp.reset();renderDrill()}
+async function startDrill(withRec){
+  if(drill.phase!=='ready')return;
+  if(withRec){const ok=await recorder.start();if(!ok&&!recorder.ok())toast('这个浏览器不支持录音，只计时')}
+  drill.phase='live';drill.left=60;renderDrill();
+  drill.timer=setInterval(()=>{drill.left--;updRing();if(drill.left<=0)endDrill()},1000);
+}
+function endDrill(){clearInterval(drill.timer);recorder.stop();drill.phase='over';markPracticed();renderDrill()}
+let ringEl,ringTxt;
+function updRing(){if(!ringEl)return;const C=2*Math.PI*36;ringEl.style.strokeDashoffset=String(C*(1-drill.left/60));ringTxt.textContent=drill.left}
+function renderDrill(){
+  const vv=V.drill;vv.replaceChildren();
+  const card=h('div',{class:'card'});
+  card.append(h('div',{class:'acts'},h('span',{class:'chip'},drill.q[1]),h('span',{class:'chip'},'60 秒')));
+  card.append(h('div',{class:'drillq'},drill.q[0]));
+  card.append(h('div',{class:'acts'},h('button',{class:'chip',onclick:()=>speak(drill.q[0])},ico('speak'),'听题目'),h('button',{class:'chip',onclick:()=>newDrill()},ico('redo'),'换一题')));
+  const C=2*Math.PI*36;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 84 84');svg.setAttribute('class','ring');svg.setAttribute('aria-label','剩余秒数');
+  svg.innerHTML='<circle class="bgc" cx="42" cy="42" r="36"/><circle class="fgc" cx="42" cy="42" r="36" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-drill.left/60))+'" transform="rotate(-90 42 42)"/><text x="42" y="43">'+drill.left+'</text>';
+  ringEl=svg.querySelector('.fgc');ringTxt=svg.querySelector('text');
+  const msg={ready:'先花几秒搭框架：观点 → 两个理由或例子 → 一句收尾。准备好就开始，尽量说满 60 秒，别停。',live:recorder.on?'正在录音，开口说吧！卡住了就用“救场句”顶一下。':'开始说吧！卡住了就用“救场句”顶一下。',over:(recorder.url||recorder.on)?'时间到！先听听自己的录音，再看参考回答。':'时间到！看看参考回答，慢速跟读一遍，再挑战一次。'}[drill.phase];
+  card.append(h('div',{class:'timer'},svg,h('div',{style:'min-width:0;font-size:14px'},msg)));
+  if(drill.phase==='ready')card.append(h('div',{class:'btnrow'},
+    recorder.ok()?h('button',{class:'btn primary',onclick:()=>startDrill(true)},'录音并开始'):null,
+    h('button',{class:'btn'+(recorder.ok()?'':' primary'),onclick:()=>startDrill(false)},recorder.ok()?'只计时':'开始计时')));
+  if(drill.phase==='live')card.append(h('div',{class:'btnrow'},h('button',{class:'btn danger',onclick:endDrill},'结束')));
+  if(drill.phase==='over'){
+    if(recorder.url){const au=h('audio',{controls:true,src:recorder.url,preload:'metadata'});card.append(h('div',{style:'display:grid;gap:6px'},h('span',{class:'lbl'},'你的录音'),au,h('span',{class:'muted',style:'font-size:12.5px'},'留意：哪里停顿最久？哪里在“呃”？下一次就在那里换成救场句。')))}
+    else if(recorder.on)card.append(h('span',{class:'muted',style:'font-size:13px'},'录音处理中…'));
+    card.append(h('div',{class:'btnrow'},h('button',{class:'btn primary',onclick:()=>newDrill(true)},'同一题再来一次'),h('button',{class:'btn',onclick:()=>newDrill()},'下一题')));
+  }
+  vv.append(card);
+  // model answer
+  const model=h('div',{class:'card',style:'margin-top:12px'});
+  if(drill.showModel||drill.phase==='over'){model.append(betterBox('参考回答（约 7 分水平）',drill.q[2]));}
+  else model.append(h('button',{class:'btn',style:'justify-self:start',onclick:()=>{drill.showModel=true;renderDrill()}},ico('eye'),' 先看参考回答'));
+  vv.append(model);
+  // AI scoring (optional)
+  if(aiOn()&&drill.phase!=='ready'&&!drill.result){
+    vv.append(h('div',{class:'eyebrow'},'AI 打分（可选）'));
+    drillComp.setBusy(drill.pending);vv.append(drillComp.el);
+  }
+  if(!aiOn()&&drill.phase==='over')vv.append(h('p',{class:'muted',style:'font-size:12.5px;margin-top:12px'},'想要 AI 按雅思口语标准打分？点右上角 ⚙ 填 API key。'));
+  if(drill.pending)vv.append(h('div',{class:'card',style:'margin-top:12px'},h('div',{class:'row'},h('div',{class:'typing'},h('i'),h('i'),h('i')),h('span',{class:'muted'},'AI 正在打分，通常 10–30 秒…'))));
+  if(drill.err)vv.append(h('div',{class:'notice',style:'margin-top:12px'},drill.err));
+  if(drill.result)vv.append(drillResult(drill.result));
+}
+function drillResult(r){
+  const sc=r.scores||{};const wrap=h('div',{class:'card',style:'margin-top:12px'});
+  wrap.append(h('div',{class:'overall'},h('b',{},(+r.overall||0).toFixed(1)),h('span',{class:'muted'},'/ 9 · 雅思口语式估分')));
+  if(r.summary_zh)wrap.append(h('p',{style:'margin:0'},r.summary_zh));
+  const bands=h('div',{class:'bands'});
+  [['fluency','流利度'],['vocabulary','词汇'],['grammar','语法'],['structure','结构']].forEach(([k,l])=>{const n=Math.max(0,Math.min(9,+sc[k]||0));
+    bands.append(h('div',{class:'band'},h('span',{},l),h('div',{class:'bar'},h('i',{style:'width:'+(n/9*100)+'%'})),h('b',{},n.toFixed(1))))});
+  wrap.append(bands);
+  const fx=Array.isArray(r.fixes)?r.fixes.slice(0,4):[];
+  if(fx.length){const ul=h('ul',{class:'fixes'});fx.forEach(x=>ul.append(h('li',{},h('s',{},x.wrong||''),' → ',h('b',{},x.right||''),h('span',{},x.why_zh||''))));wrap.append(h('span',{class:'lbl'},'改一改'),ul)}
+  if(r.model_answer)wrap.append(betterBox('按你的思路改写',String(r.model_answer)));
+  const ch=Array.isArray(r.chunks)?r.chunks.slice(0,4):[];
+  if(ch.length){const ul=h('ul',{class:'group'});ch.forEach(c=>ul.append(phraseRow(String(c.en||c),String(c.zh||''))));wrap.append(h('span',{class:'lbl'},'值得收藏的表达'),ul)}
+  if(r.next_try_zh)wrap.append(h('div',{class:'notice',style:'margin:0'},'下次试试：'+r.next_try_zh));
+  return wrap;
+}
+async function submitDrill(text,meta){
+  if(drill.pending)return;
+  const words=wc(text);drill.pending=true;drill.err='';renderDrill();
+  const prompt=`You are an IELTS-trained business English speaking coach. A Chinese professional (around IELTS 6.5, fluent reader, hesitant speaker) answered this 60-second speaking task. The answer may be transcribed by speech-to-text: ignore punctuation and small recognition glitches, but fillers and repeated words count against fluency.
+
+Task: ${drill.q[0]}
+Answer (${words} words):
+"""${text}"""
+
+Return ONLY a JSON object:
+{
+ "overall": number 1-9 in 0.5 steps (IELTS-style speaking estimate),
+ "scores": {"fluency": 1-9, "vocabulary": 1-9, "grammar": 1-9, "structure": 1-9},
+ "summary_zh": 1-2 sentences in Simplified Chinese: the main strength and the single biggest thing to improve,
+ "fixes": up to 4 [{"wrong": exact words, "right": correction, "why_zh": short Chinese reason}],
+ "model_answer": a natural spoken answer at about band 7.5, 90-130 words, keeping the learner's own ideas, with clear structure and useful business phrases,
+ "chunks": 3 reusable phrases from model_answer as [{"en": "...", "zh": "..."}],
+ "next_try_zh": one concrete instruction in Chinese for their next attempt
+}`;
+  try{drill.result=await aiJSON(prompt);drill.pending=false;renderDrill()}
+  catch(e){drill.pending=false;drill.err=aiErr(e);renderDrill()}
+}
+
+/* ---------- phrases ---------- */
+function renderPhrases(){
+  const vv=V.phrases;vv.replaceChildren();
+  vv.append(h('p',{class:'muted',style:'margin:0 0 4px;font-size:13.5px'},'卡壳时最有用的不是单词，而是整句“救场句”。每天挑 3 句，听两遍、跟读三遍。'));
+  vv.append(h('div',{class:'eyebrow'},'我的收藏 · '+store.saved.length));
+  const mine=h('ul',{class:'group'});
+  if(!store.saved.length)mine.append(h('li',{class:'empty'},'点任意短语或参考说法旁边的星星，就会存到这里。'));
+  store.saved.forEach(p=>mine.append(phraseRow(p[0],p[1])));
+  vv.append(mine);
+  BANK.forEach(g=>{vv.append(h('div',{class:'eyebrow'},g.g));const ul=h('ul',{class:'group'});g.p.forEach(p=>ul.append(phraseRow(p[0],p[1])));vv.append(ul)});
+}
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  const vv=V.settings;vv.replaceChildren();
+  vv.append(h('div',{class:'chathead'},h('button',{class:'iconbtn','aria-label':'返回',onclick:()=>show('practice')},ico('back')),h('div',{class:'ttl'},h('h2',{},'设置'),h('div',{},'AI 点评（可选）'))));
+  const c=store.ai;
+  const sel=h('select',{id:'prov'});Object.entries(PROVIDERS).forEach(([k,p])=>{const o=h('option',{value:k},p.name);if(k===c.provider)o.selected=true;sel.append(o)});
+  const base=h('input',{id:'base',type:'url',value:c.base,placeholder:'https://…',autocapitalize:'off',autocomplete:'off',spellcheck:'false'});
+  const model=h('input',{id:'model',type:'text',value:c.model,autocapitalize:'off',autocomplete:'off',spellcheck:'false'});
+  const key=h('input',{id:'key',type:'password',value:c.key,placeholder:'sk-…',autocapitalize:'off',autocomplete:'off',spellcheck:'false'});
+  const status=h('span',{class:'pill'+(aiOn()?' on':'')},aiOn()?'已开启':'未开启');
+  const advanced=h('div',{style:'display:grid;gap:12px'},h('div',{class:'field'},h('label',{for:'base'},'接口地址'),base),h('div',{class:'field'},h('label',{for:'model'},'模型名'),model));
+  const siteLine=h('small',{});
+  function syncProv(){const p=PROVIDERS[sel.value];if(sel.value!=='custom'){base.value=p.base;model.value=p.model}advanced.hidden=sel.value!=='custom';siteLine.textContent=p.site?'在 '+p.site+' 注册并创建 API key。':'填写 OpenAI 兼容接口的地址和模型名。'}
+  sel.addEventListener('change',syncProv);
+  const out=h('div',{class:'muted',style:'font-size:13px'});
+  const save=h('button',{class:'btn primary'},'保存');
+  const test=h('button',{class:'btn'},'测试一下');
+  const clear=h('button',{class:'btn'},'关闭 AI');
+  function collect(){store.ai={provider:sel.value,base:base.value.trim(),model:model.value.trim(),key:key.value.trim()};persist();status.textContent=aiOn()?'已开启':'未开启';status.classList.toggle('on',aiOn())}
+  save.addEventListener('click',()=>{collect();toast(aiOn()?'已保存，AI 点评已开启':'已保存')});
+  clear.addEventListener('click',()=>{key.value='';collect();toast('已关闭 AI，回到离线练习模式')});
+  test.addEventListener('click',async()=>{collect();if(!aiOn()){out.textContent='先填好 API key。';return}
+    test.disabled=true;out.textContent='正在连接…';
+    try{const r=await aiJSON('Reply with {"ok": true, "msg": "a short friendly greeting in English"}');out.textContent='连接成功：'+(r.msg||'OK')}
+    catch(e){out.textContent=aiErr(e)}finally{test.disabled=false}});
+  vv.append(h('div',{class:'card',style:'margin-top:8px'},
+    h('div',{class:'row',style:'justify-content:space-between'},h('h3',{style:'font-size:16px'},'AI 改错和打分'),status),
+    h('p',{class:'muted',style:'margin:0;font-size:13.5px'},'不填也能正常练习。填了之后，每句回答都会得到改错、更地道的说法，对话会跟着你的回答走，60 秒挑战也能打分。'),
+    h('ol',{class:'steps'},h('li',{},'打开 DeepSeek 开放平台（platform.deepseek.com），用手机号注册'),h('li',{},'充一点钱，10 块钱够练很久'),h('li',{},'在“API keys”里新建一个 key，复制'),h('li',{},'粘贴到下面，点保存，再点“测试一下”')),
+    h('div',{class:'field'},h('label',{for:'prov'},'服务商'),sel,siteLine),
+    advanced,
+    h('div',{class:'field'},h('label',{for:'key'},'API key'),key,h('small',{},'key 只保存在这台手机的浏览器里，只会发给你选的服务商。')),
+    h('div',{class:'btnrow'},save,test,clear),out));
+  vv.append(h('div',{class:'card',style:'margin-top:12px'},h('h3',{style:'font-size:16px'},'语音小贴士'),
+    h('ul',{class:'checklist'},
+      h('li',{},'iPhone：点输入框，用键盘右下角的麦克风说英文。键盘语言要切到 English，识别才准。'),
+      h('li',{},'朗读声音来自手机系统。iPhone 可以在 设置 → 辅助功能 → 朗读内容 → 声音 里下载更自然的英文语音（比如 Samantha 增强版）。'),
+      h('li',{},'加到主屏幕：Safari 点分享 → 添加到主屏幕，以后像 App 一样打开。'))));
+  syncProv();
+}
+
+/* ---------- boot ---------- */
+renderStreak();renderPractice();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script>
+</body>
+</html>
